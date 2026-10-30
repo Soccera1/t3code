@@ -586,13 +586,7 @@ export function findCaptureSource<T extends CaptureSourceLike>(
   activeWindow: ActiveWindowLike,
 ): T | undefined {
   const idPrefix = `window:${activeWindow.id}:`;
-  const idMatch = sources.find((source) => source.id.startsWith(idPrefix));
-  if (idMatch) return idMatch;
-
-  const title = activeWindow.title.trim();
-  if (!title) return undefined;
-  const titleMatches = sources.filter((source) => source.name.trim() === title);
-  return titleMatches.length === 1 ? titleMatches[0] : undefined;
+  return sources.find((source) => source.id.startsWith(idPrefix));
 }
 
 export function isX11Session(platform: NodeJS.Platform, environment: NodeJS.ProcessEnv): boolean {

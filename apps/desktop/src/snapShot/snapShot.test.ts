@@ -465,13 +465,13 @@ describe("findCaptureSource", () => {
     ).toEqual(sources[1]);
   });
 
-  it("falls back to a unique title match", () => {
+  it("rejects a matching title when the native window id is missing", () => {
     expect(
       findCaptureSource(sources, {
         id: 100,
         title: "Terminal",
       }),
-    ).toEqual(sources[0]);
+    ).toBeUndefined();
   });
 
   it("does not guess when a title is ambiguous", () => {
