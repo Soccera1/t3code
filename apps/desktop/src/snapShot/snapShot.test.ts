@@ -9,7 +9,6 @@ import {
   compactAccessibilityTree,
   findAccessibleWindow,
   findCaptureSource,
-  hideAndWaitForBlur,
   isWaylandSession,
   isX11Session,
 } from "./snapShot.ts";
@@ -448,28 +447,6 @@ describe("findAccessibleWindow", () => {
     expect(
       findAccessibleWindow([{ name, bounds: captured.bounds }], { ...captured, title }, "wayland"),
     ).toBeUndefined();
-  });
-});
-
-describe("hideAndWaitForBlur", () => {
-  it("waits for a delayed blur after hiding the window", async () => {
-    let blur: (() => void) | undefined;
-    let settled = false;
-    const hidden = hideAndWaitForBlur({
-      hide: () => undefined,
-      once: (_event, listener) => {
-        blur = listener;
-      },
-      removeListener: () => undefined,
-    }).then(() => {
-      settled = true;
-    });
-
-    await Promise.resolve();
-    expect(settled).toBe(false);
-    blur?.();
-    await hidden;
-    expect(settled).toBe(true);
   });
 });
 

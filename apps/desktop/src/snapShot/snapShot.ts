@@ -23,7 +23,6 @@ interface AccessibilityTreeNode {
 }
 
 const MAX_ACCESSIBILITY_TREE_NODES = 10_000;
-const WINDOW_BLUR_TIMEOUT_MS = 1_000;
 
 export const WINDOWS_MODIFIER_PAIR_VIRTUAL_KEYS: Record<
   SnapShotModifier,
@@ -436,25 +435,6 @@ export async function accessibleWindowElementTree(
   const completedTruncated = truncated || compacted.truncated;
   options.onProgress?.(compacted.root, completedTruncated, locationsReliable);
   return { root: compacted.root, truncated: completedTruncated };
-}
-
-export function hideAndWaitForBlur(window: {
-  readonly hide: () => void;
-  readonly once: (event: "blur", listener: () => void) => unknown;
-  readonly removeListener: (event: "blur", listener: () => void) => unknown;
-}): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      window.removeListener("blur", onBlur);
-      reject(new Error("Timed out waiting for T3 Code to lose focus."));
-    }, WINDOW_BLUR_TIMEOUT_MS);
-    const onBlur = () => {
-      clearTimeout(timeout);
-      resolve();
-    };
-    window.once("blur", onBlur);
-    window.hide();
-  });
 }
 
 type WindowBounds = {
