@@ -209,7 +209,9 @@ export function SnapShotSetupDialog({
         ? "Click the shortcut, then press the keys you want."
         : state.mode === "portal"
           ? "Choose your keys, then approve the permission prompt if asked."
-          : "Use both Shift keys, or record a different shortcut.";
+          : x11
+            ? "Record a key chord. Modifier-pair shortcuts aren't available on Linux."
+            : "Use both Shift keys, or record a different shortcut.";
   const stepIndex = SETUP_STEPS.findIndex(({ id }) => id === step);
   const details = [
     ...new Set(
